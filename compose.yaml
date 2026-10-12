@@ -1,0 +1,36 @@
+services:
+  db:
+    image: mariadb:latest
+    container_name: mariadb_container
+    restart: always
+    ports:
+      - "3306:3306" # Exposes MariaDB to the host
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: platform
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-net
+
+  nginx:
+    build: .
+    container_name: nginx_container
+    restart: always
+    ports:
+      - "8080:5173"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    depends_on:
+      - db
+    networks:
+      - app-net
+
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  db_data:
