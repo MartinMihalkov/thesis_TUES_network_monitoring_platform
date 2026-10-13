@@ -10,9 +10,9 @@ COPY ./www.conf /etc/php85/php-fpm.d/www.conf
 
 COPY ./nginx.sh /nginx.sh
 
-RUN npm create vue@latest app --yes -- --router --default && \
-    cd app && \
-    npm install
+#RUN npm create vue@latest app --yes -- --router --default && \
+    # cd app && \
+    # npm install
 
 
 CMD ["/nginx.sh"]

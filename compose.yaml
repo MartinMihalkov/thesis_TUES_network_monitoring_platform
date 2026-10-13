@@ -4,15 +4,17 @@ services:
     container_name: mariadb_container
     restart: always
     ports:
-      - "3306:3306" # Exposes MariaDB to the host
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: platform
     volumes:
       - db_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mariadb.conf:/etc/mysql/mariadb.conf.d/50-server.cnf
     networks:
-      - app-net
+      app-net:
+        ipv4_address: 192.168.200.2
 
   nginx:
     build: .
@@ -25,12 +27,15 @@ services:
     depends_on:
       - db
     networks:
-      - app-net
-
+      app-net:
+        ipv4_address: 192.168.200.3
 
 networks:
   app-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.200.0/24
 
 volumes:
   db_data:
