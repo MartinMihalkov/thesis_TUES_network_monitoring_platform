@@ -67,7 +67,6 @@ app.post('/api/login', async (req, res) => {
         }
 
         const user = rows[0];
-        console.log(user);
 
         const inputHash = crypto.createHash('sha256').update(password).digest('hex');
 
