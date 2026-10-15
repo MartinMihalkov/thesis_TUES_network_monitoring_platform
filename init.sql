@@ -2,6 +2,6 @@ USE platform;
 CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), pass_hash VARCHAR(60));
 INSERT INTO users (username, pass_hash) 
 VALUES 
-    ('Martin', 'smarti'),
-    ('Ivan', 'ivan123'),
-    ('Maria', 'secretpass');
+    ('Martin', '8384f694d4af157604729dbce924a4650a068982440a0507e7d2e930214fac55'),
+    ('Ivan', '6c84b1086e558a0b9dad7623979f6ddf9f337084f281d9b3a07273d04b425344'),
+    ('Maria', '626e3c805e77eeb472c42c6be607be2af7ac5c08fd7050f278e0330fe81abf57');

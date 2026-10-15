@@ -16,6 +16,23 @@ services:
       app-net:
         ipv4_address: 192.168.200.2
 
+  backend:
+      build: ./backend
+      container_name: node_backend_container
+      restart: always
+      volumes:
+        - ./backend:/app
+        - /app/node_modules
+      environment:
+        DB_HOST: 192.168.200.2
+        DB_USER: root
+        DB_PASSWORD: root
+        DB_NAME: platform
+      depends_on:
+        - db
+      networks:
+        app-net:
+          ipv4_address: 192.168.200.4
   nginx:
     build: .
     container_name: nginx_container
@@ -25,6 +42,7 @@ services:
     volumes:
       - ./html:/usr/share/nginx/html
     depends_on:
+      - backend
       - db
     networks:
       app-net:
