@@ -2,6 +2,11 @@ import express from 'express';
 import crypto from 'crypto';
 import mysql from 'mysql2/promise';
 
+import { RestconfClient } from './restconf.js';
+
+// Заменете това: import { RestconfClient } from './restconf.js';
+import { NetconfClient } from './netconf.js';
+
 // Дефинираме приложението (app)
 const app = express();
 app.use(express.json());
@@ -83,6 +88,43 @@ app.post('/api/login', async (req, res) => {
         return res.status(500).json({ error: "Възникна грешка в сървъра." });
     }
 });
+
+
+app.post('/api/devices/interfaces', async (req, res) => {
+    const { deviceIp, username, password } = req.body;
+
+    if (!deviceIp || !username || !password) {
+        return res.status(400).json({ error: "Липсват параметри за устройството." });
+    }
+
+    try {
+        const client = new NetconfClient(deviceIp, username, password);
+        console.log(client);
+        const data = await client.getInterfaces();
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+
+
+app.post('/api/devices/neighbors', async (req, res) => {
+    const { deviceIp, username, password } = req.body;
+
+    if (!deviceIp || !username || !password) {
+        return res.status(400).json({ error: "Липсват параметри за връзка с устройството." });
+    }
+
+    try {
+        const client = new NetconfClient(deviceIp, username, password);
+        const data = await client.getLLDPNeighbors();
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+
+
 
 // Стартиране на сървъра
 const PORT = 3000;

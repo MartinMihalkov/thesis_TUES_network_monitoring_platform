@@ -20,6 +20,8 @@ services:
       build: ./backend
       container_name: node_backend_container
       restart: always
+      ports:
+      - "3000:3000"
       volumes:
         - ./backend:/app
         - /app/node_modules
@@ -38,7 +40,8 @@ services:
     container_name: nginx_container
     restart: always
     ports:
-      - "8080:5173"
+      - "8080:80"
+      - "162:162/udp"
     volumes:
       - ./html:/usr/share/nginx/html
     depends_on:
